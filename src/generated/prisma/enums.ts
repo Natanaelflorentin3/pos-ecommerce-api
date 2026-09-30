@@ -44,3 +44,12 @@ export const EstadoCaja = {
 } as const
 
 export type EstadoCaja = (typeof EstadoCaja)[keyof typeof EstadoCaja]
+
+
+export const EstadoVenta = {
+  ABIERTA: 'ABIERTA',
+  COMPLETADA: 'COMPLETADA',
+  CANCELADA: 'CANCELADA'
+} as const
+
+export type EstadoVenta = (typeof EstadoVenta)[keyof typeof EstadoVenta]

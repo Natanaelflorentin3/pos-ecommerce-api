@@ -248,6 +248,7 @@ export type DetalleVentaOrderByWithRelationInput = {
 
 export type DetalleVentaWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  ventaId_productoId?: Prisma.DetalleVentaVentaIdProductoIdCompoundUniqueInput
   AND?: Prisma.DetalleVentaWhereInput | Prisma.DetalleVentaWhereInput[]
   OR?: Prisma.DetalleVentaWhereInput[]
   NOT?: Prisma.DetalleVentaWhereInput | Prisma.DetalleVentaWhereInput[]
@@ -257,7 +258,7 @@ export type DetalleVentaWhereUniqueInput = Prisma.AtLeast<{
   productoId?: Prisma.IntFilter<"DetalleVenta"> | number
   venta?: Prisma.XOR<Prisma.VentaScalarRelationFilter, Prisma.VentaWhereInput>
   producto?: Prisma.XOR<Prisma.ProductoScalarRelationFilter, Prisma.ProductoWhereInput>
-}, "id">
+}, "id" | "ventaId_productoId">
 
 export type DetalleVentaOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -342,6 +343,11 @@ export type DetalleVentaListRelationFilter = {
 
 export type DetalleVentaOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type DetalleVentaVentaIdProductoIdCompoundUniqueInput = {
+  ventaId: number
+  productoId: number
 }
 
 export type DetalleVentaCountOrderByAggregateInput = {

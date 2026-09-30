@@ -263,21 +263,38 @@ export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
 }
 
-export type EnumMetodoPagoFilter<$PrismaModel = never> = {
-  equals?: $Enums.MetodoPago | Prisma.EnumMetodoPagoFieldRefInput<$PrismaModel>
-  in?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMetodoPagoFilter<$PrismaModel> | $Enums.MetodoPago
+export type EnumMetodoPagoNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.MetodoPago | Prisma.EnumMetodoPagoFieldRefInput<$PrismaModel> | null
+  in?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumMetodoPagoNullableFilter<$PrismaModel> | $Enums.MetodoPago | null
 }
 
-export type EnumMetodoPagoWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.MetodoPago | Prisma.EnumMetodoPagoFieldRefInput<$PrismaModel>
-  in?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMetodoPagoWithAggregatesFilter<$PrismaModel> | $Enums.MetodoPago
+export type EnumEstadoVentaFilter<$PrismaModel = never> = {
+  equals?: $Enums.EstadoVenta | Prisma.EnumEstadoVentaFieldRefInput<$PrismaModel>
+  in?: $Enums.EstadoVenta[] | Prisma.ListEnumEstadoVentaFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EstadoVenta[] | Prisma.ListEnumEstadoVentaFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEstadoVentaFilter<$PrismaModel> | $Enums.EstadoVenta
+}
+
+export type EnumMetodoPagoNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MetodoPago | Prisma.EnumMetodoPagoFieldRefInput<$PrismaModel> | null
+  in?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumMetodoPagoNullableWithAggregatesFilter<$PrismaModel> | $Enums.MetodoPago | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMetodoPagoNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMetodoPagoNullableFilter<$PrismaModel>
+}
+
+export type EnumEstadoVentaWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EstadoVenta | Prisma.EnumEstadoVentaFieldRefInput<$PrismaModel>
+  in?: $Enums.EstadoVenta[] | Prisma.ListEnumEstadoVentaFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EstadoVenta[] | Prisma.ListEnumEstadoVentaFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEstadoVentaWithAggregatesFilter<$PrismaModel> | $Enums.EstadoVenta
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumMetodoPagoFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumMetodoPagoFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEstadoVentaFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEstadoVentaFilter<$PrismaModel>
 }
 
 export type EnumEstadoOrdenFilter<$PrismaModel = never> = {
@@ -586,21 +603,38 @@ export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
 }
 
-export type NestedEnumMetodoPagoFilter<$PrismaModel = never> = {
-  equals?: $Enums.MetodoPago | Prisma.EnumMetodoPagoFieldRefInput<$PrismaModel>
-  in?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMetodoPagoFilter<$PrismaModel> | $Enums.MetodoPago
+export type NestedEnumMetodoPagoNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.MetodoPago | Prisma.EnumMetodoPagoFieldRefInput<$PrismaModel> | null
+  in?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumMetodoPagoNullableFilter<$PrismaModel> | $Enums.MetodoPago | null
 }
 
-export type NestedEnumMetodoPagoWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.MetodoPago | Prisma.EnumMetodoPagoFieldRefInput<$PrismaModel>
-  in?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel>
-  notIn?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumMetodoPagoWithAggregatesFilter<$PrismaModel> | $Enums.MetodoPago
+export type NestedEnumEstadoVentaFilter<$PrismaModel = never> = {
+  equals?: $Enums.EstadoVenta | Prisma.EnumEstadoVentaFieldRefInput<$PrismaModel>
+  in?: $Enums.EstadoVenta[] | Prisma.ListEnumEstadoVentaFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EstadoVenta[] | Prisma.ListEnumEstadoVentaFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEstadoVentaFilter<$PrismaModel> | $Enums.EstadoVenta
+}
+
+export type NestedEnumMetodoPagoNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.MetodoPago | Prisma.EnumMetodoPagoFieldRefInput<$PrismaModel> | null
+  in?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.MetodoPago[] | Prisma.ListEnumMetodoPagoFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumMetodoPagoNullableWithAggregatesFilter<$PrismaModel> | $Enums.MetodoPago | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumMetodoPagoNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumMetodoPagoNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumEstadoVentaWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EstadoVenta | Prisma.EnumEstadoVentaFieldRefInput<$PrismaModel>
+  in?: $Enums.EstadoVenta[] | Prisma.ListEnumEstadoVentaFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EstadoVenta[] | Prisma.ListEnumEstadoVentaFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEstadoVentaWithAggregatesFilter<$PrismaModel> | $Enums.EstadoVenta
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumMetodoPagoFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumMetodoPagoFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEstadoVentaFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEstadoVentaFilter<$PrismaModel>
 }
 
 export type NestedEnumEstadoOrdenFilter<$PrismaModel = never> = {

@@ -1431,6 +1431,7 @@ export const VentaScalarFieldEnum = {
   fecha: 'fecha',
   total: 'total',
   metodoPago: 'metodoPago',
+  estado: 'estado',
   cajaId: 'cajaId',
   cajeroId: 'cajeroId'
 } as const
@@ -1626,6 +1627,20 @@ export type EnumMetodoPagoFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'MetodoPago[]'
  */
 export type ListEnumMetodoPagoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MetodoPago[]'>
+    
+
+
+/**
+ * Reference to a field of type 'EstadoVenta'
+ */
+export type EnumEstadoVentaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoVenta'>
+    
+
+
+/**
+ * Reference to a field of type 'EstadoVenta[]'
+ */
+export type ListEnumEstadoVentaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoVenta[]'>
     
 
 

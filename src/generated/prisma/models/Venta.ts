@@ -45,6 +45,7 @@ export type VentaMinAggregateOutputType = {
   fecha: Date | null
   total: runtime.Decimal | null
   metodoPago: $Enums.MetodoPago | null
+  estado: $Enums.EstadoVenta | null
   cajaId: number | null
   cajeroId: number | null
 }
@@ -54,6 +55,7 @@ export type VentaMaxAggregateOutputType = {
   fecha: Date | null
   total: runtime.Decimal | null
   metodoPago: $Enums.MetodoPago | null
+  estado: $Enums.EstadoVenta | null
   cajaId: number | null
   cajeroId: number | null
 }
@@ -63,6 +65,7 @@ export type VentaCountAggregateOutputType = {
   fecha: number
   total: number
   metodoPago: number
+  estado: number
   cajaId: number
   cajeroId: number
   _all: number
@@ -88,6 +91,7 @@ export type VentaMinAggregateInputType = {
   fecha?: true
   total?: true
   metodoPago?: true
+  estado?: true
   cajaId?: true
   cajeroId?: true
 }
@@ -97,6 +101,7 @@ export type VentaMaxAggregateInputType = {
   fecha?: true
   total?: true
   metodoPago?: true
+  estado?: true
   cajaId?: true
   cajeroId?: true
 }
@@ -106,6 +111,7 @@ export type VentaCountAggregateInputType = {
   fecha?: true
   total?: true
   metodoPago?: true
+  estado?: true
   cajaId?: true
   cajeroId?: true
   _all?: true
@@ -201,7 +207,8 @@ export type VentaGroupByOutputType = {
   id: number
   fecha: Date
   total: runtime.Decimal
-  metodoPago: $Enums.MetodoPago
+  metodoPago: $Enums.MetodoPago | null
+  estado: $Enums.EstadoVenta
   cajaId: number
   cajeroId: number
   _count: VentaCountAggregateOutputType | null
@@ -233,7 +240,8 @@ export type VentaWhereInput = {
   id?: Prisma.IntFilter<"Venta"> | number
   fecha?: Prisma.DateTimeFilter<"Venta"> | Date | string
   total?: Prisma.DecimalFilter<"Venta"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFilter<"Venta"> | $Enums.MetodoPago
+  metodoPago?: Prisma.EnumMetodoPagoNullableFilter<"Venta"> | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFilter<"Venta"> | $Enums.EstadoVenta
   cajaId?: Prisma.IntFilter<"Venta"> | number
   cajeroId?: Prisma.IntFilter<"Venta"> | number
   caja?: Prisma.XOR<Prisma.CajaScalarRelationFilter, Prisma.CajaWhereInput>
@@ -245,7 +253,8 @@ export type VentaOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   fecha?: Prisma.SortOrder
   total?: Prisma.SortOrder
-  metodoPago?: Prisma.SortOrder
+  metodoPago?: Prisma.SortOrderInput | Prisma.SortOrder
+  estado?: Prisma.SortOrder
   cajaId?: Prisma.SortOrder
   cajeroId?: Prisma.SortOrder
   caja?: Prisma.CajaOrderByWithRelationInput
@@ -260,7 +269,8 @@ export type VentaWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.VentaWhereInput | Prisma.VentaWhereInput[]
   fecha?: Prisma.DateTimeFilter<"Venta"> | Date | string
   total?: Prisma.DecimalFilter<"Venta"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFilter<"Venta"> | $Enums.MetodoPago
+  metodoPago?: Prisma.EnumMetodoPagoNullableFilter<"Venta"> | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFilter<"Venta"> | $Enums.EstadoVenta
   cajaId?: Prisma.IntFilter<"Venta"> | number
   cajeroId?: Prisma.IntFilter<"Venta"> | number
   caja?: Prisma.XOR<Prisma.CajaScalarRelationFilter, Prisma.CajaWhereInput>
@@ -272,7 +282,8 @@ export type VentaOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   fecha?: Prisma.SortOrder
   total?: Prisma.SortOrder
-  metodoPago?: Prisma.SortOrder
+  metodoPago?: Prisma.SortOrderInput | Prisma.SortOrder
+  estado?: Prisma.SortOrder
   cajaId?: Prisma.SortOrder
   cajeroId?: Prisma.SortOrder
   _count?: Prisma.VentaCountOrderByAggregateInput
@@ -289,15 +300,17 @@ export type VentaScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Venta"> | number
   fecha?: Prisma.DateTimeWithAggregatesFilter<"Venta"> | Date | string
   total?: Prisma.DecimalWithAggregatesFilter<"Venta"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoWithAggregatesFilter<"Venta"> | $Enums.MetodoPago
+  metodoPago?: Prisma.EnumMetodoPagoNullableWithAggregatesFilter<"Venta"> | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaWithAggregatesFilter<"Venta"> | $Enums.EstadoVenta
   cajaId?: Prisma.IntWithAggregatesFilter<"Venta"> | number
   cajeroId?: Prisma.IntWithAggregatesFilter<"Venta"> | number
 }
 
 export type VentaCreateInput = {
   fecha?: Date | string
-  total: runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago: $Enums.MetodoPago
+  total?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  metodoPago?: $Enums.MetodoPago | null
+  estado?: $Enums.EstadoVenta
   caja: Prisma.CajaCreateNestedOneWithoutVentasInput
   cajero: Prisma.UsuarioCreateNestedOneWithoutVentasInput
   detalles?: Prisma.DetalleVentaCreateNestedManyWithoutVentaInput
@@ -306,8 +319,9 @@ export type VentaCreateInput = {
 export type VentaUncheckedCreateInput = {
   id?: number
   fecha?: Date | string
-  total: runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago: $Enums.MetodoPago
+  total?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  metodoPago?: $Enums.MetodoPago | null
+  estado?: $Enums.EstadoVenta
   cajaId: number
   cajeroId: number
   detalles?: Prisma.DetalleVentaUncheckedCreateNestedManyWithoutVentaInput
@@ -316,7 +330,8 @@ export type VentaUncheckedCreateInput = {
 export type VentaUpdateInput = {
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+  metodoPago?: Prisma.NullableEnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
   caja?: Prisma.CajaUpdateOneRequiredWithoutVentasNestedInput
   cajero?: Prisma.UsuarioUpdateOneRequiredWithoutVentasNestedInput
   detalles?: Prisma.DetalleVentaUpdateManyWithoutVentaNestedInput
@@ -326,7 +341,8 @@ export type VentaUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+  metodoPago?: Prisma.NullableEnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
   cajaId?: Prisma.IntFieldUpdateOperationsInput | number
   cajeroId?: Prisma.IntFieldUpdateOperationsInput | number
   detalles?: Prisma.DetalleVentaUncheckedUpdateManyWithoutVentaNestedInput
@@ -335,8 +351,9 @@ export type VentaUncheckedUpdateInput = {
 export type VentaCreateManyInput = {
   id?: number
   fecha?: Date | string
-  total: runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago: $Enums.MetodoPago
+  total?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  metodoPago?: $Enums.MetodoPago | null
+  estado?: $Enums.EstadoVenta
   cajaId: number
   cajeroId: number
 }
@@ -344,14 +361,16 @@ export type VentaCreateManyInput = {
 export type VentaUpdateManyMutationInput = {
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+  metodoPago?: Prisma.NullableEnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
 }
 
 export type VentaUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+  metodoPago?: Prisma.NullableEnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
   cajaId?: Prisma.IntFieldUpdateOperationsInput | number
   cajeroId?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -371,6 +390,7 @@ export type VentaCountOrderByAggregateInput = {
   fecha?: Prisma.SortOrder
   total?: Prisma.SortOrder
   metodoPago?: Prisma.SortOrder
+  estado?: Prisma.SortOrder
   cajaId?: Prisma.SortOrder
   cajeroId?: Prisma.SortOrder
 }
@@ -387,6 +407,7 @@ export type VentaMaxOrderByAggregateInput = {
   fecha?: Prisma.SortOrder
   total?: Prisma.SortOrder
   metodoPago?: Prisma.SortOrder
+  estado?: Prisma.SortOrder
   cajaId?: Prisma.SortOrder
   cajeroId?: Prisma.SortOrder
 }
@@ -396,6 +417,7 @@ export type VentaMinOrderByAggregateInput = {
   fecha?: Prisma.SortOrder
   total?: Prisma.SortOrder
   metodoPago?: Prisma.SortOrder
+  estado?: Prisma.SortOrder
   cajaId?: Prisma.SortOrder
   cajeroId?: Prisma.SortOrder
 }
@@ -496,8 +518,12 @@ export type VentaUncheckedUpdateManyWithoutCajaNestedInput = {
   deleteMany?: Prisma.VentaScalarWhereInput | Prisma.VentaScalarWhereInput[]
 }
 
-export type EnumMetodoPagoFieldUpdateOperationsInput = {
-  set?: $Enums.MetodoPago
+export type NullableEnumMetodoPagoFieldUpdateOperationsInput = {
+  set?: $Enums.MetodoPago | null
+}
+
+export type EnumEstadoVentaFieldUpdateOperationsInput = {
+  set?: $Enums.EstadoVenta
 }
 
 export type VentaCreateNestedOneWithoutDetallesInput = {
@@ -516,8 +542,9 @@ export type VentaUpdateOneRequiredWithoutDetallesNestedInput = {
 
 export type VentaCreateWithoutCajeroInput = {
   fecha?: Date | string
-  total: runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago: $Enums.MetodoPago
+  total?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  metodoPago?: $Enums.MetodoPago | null
+  estado?: $Enums.EstadoVenta
   caja: Prisma.CajaCreateNestedOneWithoutVentasInput
   detalles?: Prisma.DetalleVentaCreateNestedManyWithoutVentaInput
 }
@@ -525,8 +552,9 @@ export type VentaCreateWithoutCajeroInput = {
 export type VentaUncheckedCreateWithoutCajeroInput = {
   id?: number
   fecha?: Date | string
-  total: runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago: $Enums.MetodoPago
+  total?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  metodoPago?: $Enums.MetodoPago | null
+  estado?: $Enums.EstadoVenta
   cajaId: number
   detalles?: Prisma.DetalleVentaUncheckedCreateNestedManyWithoutVentaInput
 }
@@ -564,15 +592,17 @@ export type VentaScalarWhereInput = {
   id?: Prisma.IntFilter<"Venta"> | number
   fecha?: Prisma.DateTimeFilter<"Venta"> | Date | string
   total?: Prisma.DecimalFilter<"Venta"> | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFilter<"Venta"> | $Enums.MetodoPago
+  metodoPago?: Prisma.EnumMetodoPagoNullableFilter<"Venta"> | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFilter<"Venta"> | $Enums.EstadoVenta
   cajaId?: Prisma.IntFilter<"Venta"> | number
   cajeroId?: Prisma.IntFilter<"Venta"> | number
 }
 
 export type VentaCreateWithoutCajaInput = {
   fecha?: Date | string
-  total: runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago: $Enums.MetodoPago
+  total?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  metodoPago?: $Enums.MetodoPago | null
+  estado?: $Enums.EstadoVenta
   cajero: Prisma.UsuarioCreateNestedOneWithoutVentasInput
   detalles?: Prisma.DetalleVentaCreateNestedManyWithoutVentaInput
 }
@@ -580,8 +610,9 @@ export type VentaCreateWithoutCajaInput = {
 export type VentaUncheckedCreateWithoutCajaInput = {
   id?: number
   fecha?: Date | string
-  total: runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago: $Enums.MetodoPago
+  total?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  metodoPago?: $Enums.MetodoPago | null
+  estado?: $Enums.EstadoVenta
   cajeroId: number
   detalles?: Prisma.DetalleVentaUncheckedCreateNestedManyWithoutVentaInput
 }
@@ -614,8 +645,9 @@ export type VentaUpdateManyWithWhereWithoutCajaInput = {
 
 export type VentaCreateWithoutDetallesInput = {
   fecha?: Date | string
-  total: runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago: $Enums.MetodoPago
+  total?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  metodoPago?: $Enums.MetodoPago | null
+  estado?: $Enums.EstadoVenta
   caja: Prisma.CajaCreateNestedOneWithoutVentasInput
   cajero: Prisma.UsuarioCreateNestedOneWithoutVentasInput
 }
@@ -623,8 +655,9 @@ export type VentaCreateWithoutDetallesInput = {
 export type VentaUncheckedCreateWithoutDetallesInput = {
   id?: number
   fecha?: Date | string
-  total: runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago: $Enums.MetodoPago
+  total?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  metodoPago?: $Enums.MetodoPago | null
+  estado?: $Enums.EstadoVenta
   cajaId: number
   cajeroId: number
 }
@@ -648,7 +681,8 @@ export type VentaUpdateToOneWithWhereWithoutDetallesInput = {
 export type VentaUpdateWithoutDetallesInput = {
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+  metodoPago?: Prisma.NullableEnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
   caja?: Prisma.CajaUpdateOneRequiredWithoutVentasNestedInput
   cajero?: Prisma.UsuarioUpdateOneRequiredWithoutVentasNestedInput
 }
@@ -657,7 +691,8 @@ export type VentaUncheckedUpdateWithoutDetallesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+  metodoPago?: Prisma.NullableEnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
   cajaId?: Prisma.IntFieldUpdateOperationsInput | number
   cajeroId?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -665,15 +700,17 @@ export type VentaUncheckedUpdateWithoutDetallesInput = {
 export type VentaCreateManyCajeroInput = {
   id?: number
   fecha?: Date | string
-  total: runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago: $Enums.MetodoPago
+  total?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  metodoPago?: $Enums.MetodoPago | null
+  estado?: $Enums.EstadoVenta
   cajaId: number
 }
 
 export type VentaUpdateWithoutCajeroInput = {
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+  metodoPago?: Prisma.NullableEnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
   caja?: Prisma.CajaUpdateOneRequiredWithoutVentasNestedInput
   detalles?: Prisma.DetalleVentaUpdateManyWithoutVentaNestedInput
 }
@@ -682,7 +719,8 @@ export type VentaUncheckedUpdateWithoutCajeroInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+  metodoPago?: Prisma.NullableEnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
   cajaId?: Prisma.IntFieldUpdateOperationsInput | number
   detalles?: Prisma.DetalleVentaUncheckedUpdateManyWithoutVentaNestedInput
 }
@@ -691,22 +729,25 @@ export type VentaUncheckedUpdateManyWithoutCajeroInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+  metodoPago?: Prisma.NullableEnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
   cajaId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type VentaCreateManyCajaInput = {
   id?: number
   fecha?: Date | string
-  total: runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago: $Enums.MetodoPago
+  total?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  metodoPago?: $Enums.MetodoPago | null
+  estado?: $Enums.EstadoVenta
   cajeroId: number
 }
 
 export type VentaUpdateWithoutCajaInput = {
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+  metodoPago?: Prisma.NullableEnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
   cajero?: Prisma.UsuarioUpdateOneRequiredWithoutVentasNestedInput
   detalles?: Prisma.DetalleVentaUpdateManyWithoutVentaNestedInput
 }
@@ -715,7 +756,8 @@ export type VentaUncheckedUpdateWithoutCajaInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+  metodoPago?: Prisma.NullableEnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
   cajeroId?: Prisma.IntFieldUpdateOperationsInput | number
   detalles?: Prisma.DetalleVentaUncheckedUpdateManyWithoutVentaNestedInput
 }
@@ -724,7 +766,8 @@ export type VentaUncheckedUpdateManyWithoutCajaInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
-  metodoPago?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+  metodoPago?: Prisma.NullableEnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago | null
+  estado?: Prisma.EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
   cajeroId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -764,6 +807,7 @@ export type VentaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   fecha?: boolean
   total?: boolean
   metodoPago?: boolean
+  estado?: boolean
   cajaId?: boolean
   cajeroId?: boolean
   caja?: boolean | Prisma.CajaDefaultArgs<ExtArgs>
@@ -777,6 +821,7 @@ export type VentaSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   fecha?: boolean
   total?: boolean
   metodoPago?: boolean
+  estado?: boolean
   cajaId?: boolean
   cajeroId?: boolean
   caja?: boolean | Prisma.CajaDefaultArgs<ExtArgs>
@@ -788,6 +833,7 @@ export type VentaSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   fecha?: boolean
   total?: boolean
   metodoPago?: boolean
+  estado?: boolean
   cajaId?: boolean
   cajeroId?: boolean
   caja?: boolean | Prisma.CajaDefaultArgs<ExtArgs>
@@ -799,11 +845,12 @@ export type VentaSelectScalar = {
   fecha?: boolean
   total?: boolean
   metodoPago?: boolean
+  estado?: boolean
   cajaId?: boolean
   cajeroId?: boolean
 }
 
-export type VentaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fecha" | "total" | "metodoPago" | "cajaId" | "cajeroId", ExtArgs["result"]["venta"]>
+export type VentaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fecha" | "total" | "metodoPago" | "estado" | "cajaId" | "cajeroId", ExtArgs["result"]["venta"]>
 export type VentaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   caja?: boolean | Prisma.CajaDefaultArgs<ExtArgs>
   cajero?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
@@ -830,7 +877,8 @@ export type $VentaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     id: number
     fecha: Date
     total: runtime.Decimal
-    metodoPago: $Enums.MetodoPago
+    metodoPago: $Enums.MetodoPago | null
+    estado: $Enums.EstadoVenta
     cajaId: number
     cajeroId: number
   }, ExtArgs["result"]["venta"]>
@@ -1263,6 +1311,7 @@ export interface VentaFieldRefs {
   readonly fecha: Prisma.FieldRef<"Venta", 'DateTime'>
   readonly total: Prisma.FieldRef<"Venta", 'Decimal'>
   readonly metodoPago: Prisma.FieldRef<"Venta", 'MetodoPago'>
+  readonly estado: Prisma.FieldRef<"Venta", 'EstadoVenta'>
   readonly cajaId: Prisma.FieldRef<"Venta", 'Int'>
   readonly cajeroId: Prisma.FieldRef<"Venta", 'Int'>
 }

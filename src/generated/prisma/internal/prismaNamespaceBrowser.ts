@@ -157,6 +157,7 @@ export const VentaScalarFieldEnum = {
   fecha: 'fecha',
   total: 'total',
   metodoPago: 'metodoPago',
+  estado: 'estado',
   cajaId: 'cajaId',
   cajeroId: 'cajeroId'
 } as const

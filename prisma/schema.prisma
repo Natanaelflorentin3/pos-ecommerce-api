@@ -41,6 +41,12 @@ enum EstadoCaja {
   CERRADA
 }
 
+enum EstadoVenta {
+  ABIERTA
+  COMPLETADA
+  CANCELADA
+}
+
 // ─── IDENTIDAD ───────────────────────────────────────
 
 model Usuario {
@@ -120,14 +126,15 @@ model Caja {
 }
 
 model Venta {
-  id         Int        @id @default(autoincrement())
-  fecha      DateTime   @default(now())
-  total      Decimal    @db.Decimal(10, 2)
-  metodoPago MetodoPago
+  id         Int          @id @default(autoincrement())
+  fecha      DateTime     @default(now())
+  total      Decimal      @default(0) @db.Decimal(10, 2)
+  metodoPago MetodoPago?
+  estado     EstadoVenta  @default(ABIERTA)
   cajaId     Int
-  caja       Caja       @relation(fields: [cajaId], references: [id])
+  caja       Caja         @relation(fields: [cajaId], references: [id])
   cajeroId   Int
-  cajero     Usuario    @relation(fields: [cajeroId], references: [id])
+  cajero     Usuario      @relation(fields: [cajeroId], references: [id])
 
   detalles DetalleVenta[]
 }
@@ -137,9 +144,11 @@ model DetalleVenta {
   cantidad       Int
   precioUnitario Decimal  @db.Decimal(10, 2)
   ventaId        Int
-  venta          Venta    @relation(fields: [ventaId], references: [id])
+  venta          Venta    @relation(fields: [ventaId], references: [id], onDelete: Cascade)
   productoId     Int
   producto       Producto @relation(fields: [productoId], references: [id])
+
+  @@unique([ventaId, productoId])
 }
 
 // ─── TIENDA ONLINE Y ÓRDENES ─────────────────────────
