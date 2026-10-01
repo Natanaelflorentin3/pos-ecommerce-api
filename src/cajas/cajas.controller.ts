@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Rol } from '../generated/prisma/client';
@@ -8,6 +8,7 @@ import { UsuarioActual } from '../auth/decorators/usuario-actual.decorator';
 import type { UsuarioActualPayload } from '../auth/decorators/usuario-actual.decorator';
 import { CajasService } from './cajas.service';
 import { AbrirCajaDto } from './dto/abrir-caja.dto';
+import { CerrarCajaDto } from './dto/cerrar-caja.dto';
 
 @ApiTags('Cajas')
 @ApiBearerAuth()
@@ -26,4 +27,23 @@ export class CajasController {
   actual(@UsuarioActual() usuario: UsuarioActualPayload) {
     return this.cajasService.obtenerCajaAbierta(usuario.id);
   }
+
+
+  @Post('cerrar')
+  cerrar(@UsuarioActual() usuario: UsuarioActualPayload, @Body() dto: CerrarCajaDto) {
+    return this.cajasService.cerrar(usuario.id, dto);
+  }
+
+  @Get()
+  @Roles(Rol.ADMIN)
+  listar() {
+    return this.cajasService.listar();
+  }
+
+  @Get(':id/conciliacion')
+  @Roles(Rol.ADMIN)
+  conciliacion(@Param('id', ParseIntPipe) id: number) {
+    return this.cajasService.conciliacion(id);
+  }
+
 }
