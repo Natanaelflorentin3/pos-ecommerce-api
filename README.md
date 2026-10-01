@@ -1,118 +1,172 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# POS & E-commerce API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API REST híbrida para un comercio que vende en **mostrador (POS)** y en **tienda online**, con un **inventario único sincronizado** entre ambos canales.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Proyecto Final — Desarrollo Web Full Stack (FUNVAL).
 
-## Description
+## 🔗 Links
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+| | |
+|---|---|
+| API en producción | https://pos-ecommerce-api.onrender.com |
+| Documentación (Swagger) | https://pos-ecommerce-api.onrender.com/api/docs |
 
-## Project setup
+> El plan gratuito de Render "duerme" el servicio tras 15 minutos sin uso: la primera request puede tardar ~50 segundos.
 
-```bash
-$ npm install
-```
+## 👤 Usuarios de prueba
 
-## Compile and run the project
+| Rol | Email | Contraseña |
+|---|---|---|
+| Administrador / Dueño | `admin@pos.com` | `admin123` |
+| Cajero | `ana@pos.com` | `cajero123` |
+| Cliente web | `lucia@mail.com` | `cliente123` |
+
+En Swagger: `POST /api/auth/login` → copiar el `access_token` → botón **Authorize**.
+
+La base de producción incluye: 4 categorías, 8 productos (uno sin stock), una caja cerrada con ventas del **2026-10-01** (los 3 métodos de pago), una caja abierta para el cajero y órdenes en los 5 estados logísticos.
+
+## 🛠️ Stack
+
+NestJS · TypeScript · Prisma 7 · PostgreSQL · Passport + JWT · class-validator · Swagger · Render · Supabase
+
+## ⚙️ Correr en local
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/Natanaelflorentin3/pos-ecommerce-api.git
+cd pos-ecommerce-api
+npm install
+cp .env.example .env      # completar DATABASE_URL y JWT_SECRET
+npx prisma migrate dev
+npx prisma generate
+npx prisma db seed
+npm run start:dev
 ```
 
-## Run tests
+Swagger: http://localhost:3000/api/docs
 
-```bash
-# unit tests
-$ npm run test
+## 📏 Reglas de negocio implementadas
 
-# e2e tests
-$ npm run test:e2e
+- **Inventario transaccional:** el POS y la tienda descuentan de la misma columna `stock` con una operación atómica (`updateMany` con `stock >= cantidad` dentro de `$transaction`). Si un producto no alcanza, se revierte toda la operación: no hay sobreventa ni inventario a medias.
+- **Catálogo público:** no muestra productos con stock 0 ni el costo de adquisición. El `costo` solo lo ve el Administrador.
+- **POS:** la venta se abre, se arma un carrito interno y al cobrar se consolida el comprobante y se descuenta el stock. Requiere una caja abierta.
+- **Órdenes:** desde la web (checkout) o manuales (ventas por redes sociales, sin cuenta). Máquina de estados `PENDIENTE → PAGADO → EN_CAMINO → ENTREGADO` (o `CANCELADO`, que devuelve el stock).
+- **Sin costo de envío:** el total de la orden es solo la suma de los productos. El envío lo paga el cliente al motorista.
+- **Caja:** apertura y cierre con conciliación. Efectivo esperado = monto inicial + ventas en efectivo; se compara con lo declarado (cuadra / sobrante / faltante).
+- **Roles:** los clientes se registran solos; administradores y cajeros los crea un Administrador.
 
-# test coverage
-$ npm run test:cov
+## 🗂️ Módulos
+
+`auth` · `usuarios` · `categorias` · `productos` · `cajas` · `ventas` · `clientes` · `carrito` · `ordenes` · `prisma`
+
+## 🧩 Diagrama Entidad-Relación
+
+```mermaid
+erDiagram
+  Usuario ||--o| Cliente : "tiene perfil"
+  Usuario ||--o{ Caja : "abre"
+  Usuario ||--o{ Venta : "cobra"
+  Cliente ||--o{ Direccion : "tiene"
+  Cliente ||--o| Carrito : "tiene"
+  Cliente |o--o{ Orden : "realiza"
+  Categoria ||--o{ Producto : "agrupa"
+  Caja ||--o{ Venta : "contiene"
+  Venta ||--o{ DetalleVenta : "tiene"
+  Producto ||--o{ DetalleVenta : "aparece en"
+  Carrito ||--o{ ItemCarrito : "contiene"
+  Producto ||--o{ ItemCarrito : "aparece en"
+  Orden ||--|{ DetalleOrden : "tiene"
+  Producto ||--o{ DetalleOrden : "aparece en"
+
+  Usuario {
+    int id PK
+    string nombre
+    string apellido
+    string email UK
+    string password
+    Rol rol
+    boolean activo
+    datetime creadoEn
+  }
+  Cliente {
+    int id PK
+    string telefono
+    int usuarioId FK,UK
+  }
+  Direccion {
+    int id PK
+    string calle
+    string ciudad
+    string referencias
+    int clienteId FK
+  }
+  Categoria {
+    int id PK
+    string nombre UK
+  }
+  Producto {
+    int id PK
+    string nombre
+    string descripcion
+    decimal costo
+    decimal precioVenta
+    int stock
+    boolean activo
+    int categoriaId FK
+  }
+  Caja {
+    int id PK
+    decimal montoInicial
+    decimal montoFinalDeclarado
+    EstadoCaja estado
+    datetime abiertaEn
+    datetime cerradaEn
+    int usuarioId FK
+  }
+  Venta {
+    int id PK
+    datetime fecha
+    decimal total
+    MetodoPago metodoPago
+    EstadoVenta estado
+    int cajaId FK
+    int cajeroId FK
+  }
+  DetalleVenta {
+    int id PK
+    int cantidad
+    decimal precioUnitario
+    int ventaId FK
+    int productoId FK
+  }
+  Carrito {
+    int id PK
+    datetime actualizadoEn
+    int clienteId FK,UK
+  }
+  ItemCarrito {
+    int id PK
+    int cantidad
+    int carritoId FK
+    int productoId FK
+  }
+  Orden {
+    int id PK
+    datetime fecha
+    decimal total
+    EstadoOrden estado
+    string nombreContacto
+    string telefonoContacto
+    string direccionEnvio
+    string referencias
+    int clienteId FK
+  }
+  DetalleOrden {
+    int id PK
+    int cantidad
+    decimal precioUnitario
+    int ordenId FK
+    int productoId FK
+  }
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Observability
-
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
-
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
-
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
-
-This project is already instrumented. Create a free account at [observe.nestjs.com](https://observe.nestjs.com), add an application, and paste the generated app key and secret into the `ObserveModule.forRoot()` call in `src/app.module.ts`.
-
-The free plan needs no payment details and covers 300,000 events a month. You can also browse the [live demo](https://www.observe-demo.nestjs.com/dashboard) first - the whole dashboard over a busy service's data, with nothing to install.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observe](https://observe.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**Enums:** `Rol` (ADMIN, CAJERO, CLIENTE) · `MetodoPago` (EFECTIVO, TARJETA, TRANSFERENCIA_QR) · `EstadoVenta` (ABIERTA, COMPLETADA, CANCELADA) · `EstadoOrden` (PENDIENTE, PAGADO, EN_CAMINO, ENTREGADO, CANCELADO) · `EstadoCaja` (ABIERTA, CERRADA)
