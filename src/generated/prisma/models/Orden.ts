@@ -257,6 +257,7 @@ export type OrdenWhereInput = {
   referencias?: Prisma.StringNullableFilter<"Orden"> | string | null
   clienteId?: Prisma.IntNullableFilter<"Orden"> | number | null
   cliente?: Prisma.XOR<Prisma.ClienteNullableScalarRelationFilter, Prisma.ClienteWhereInput> | null
+  pagos?: Prisma.PagoListRelationFilter
   detalles?: Prisma.DetalleOrdenListRelationFilter
 }
 
@@ -271,6 +272,7 @@ export type OrdenOrderByWithRelationInput = {
   referencias?: Prisma.SortOrderInput | Prisma.SortOrder
   clienteId?: Prisma.SortOrderInput | Prisma.SortOrder
   cliente?: Prisma.ClienteOrderByWithRelationInput
+  pagos?: Prisma.PagoOrderByRelationAggregateInput
   detalles?: Prisma.DetalleOrdenOrderByRelationAggregateInput
 }
 
@@ -288,6 +290,7 @@ export type OrdenWhereUniqueInput = Prisma.AtLeast<{
   referencias?: Prisma.StringNullableFilter<"Orden"> | string | null
   clienteId?: Prisma.IntNullableFilter<"Orden"> | number | null
   cliente?: Prisma.XOR<Prisma.ClienteNullableScalarRelationFilter, Prisma.ClienteWhereInput> | null
+  pagos?: Prisma.PagoListRelationFilter
   detalles?: Prisma.DetalleOrdenListRelationFilter
 }, "id">
 
@@ -332,6 +335,7 @@ export type OrdenCreateInput = {
   direccionEnvio: string
   referencias?: string | null
   cliente?: Prisma.ClienteCreateNestedOneWithoutOrdenesInput
+  pagos?: Prisma.PagoCreateNestedManyWithoutOrdenInput
   detalles?: Prisma.DetalleOrdenCreateNestedManyWithoutOrdenInput
 }
 
@@ -345,6 +349,7 @@ export type OrdenUncheckedCreateInput = {
   direccionEnvio: string
   referencias?: string | null
   clienteId?: number | null
+  pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutOrdenInput
   detalles?: Prisma.DetalleOrdenUncheckedCreateNestedManyWithoutOrdenInput
 }
 
@@ -357,6 +362,7 @@ export type OrdenUpdateInput = {
   direccionEnvio?: Prisma.StringFieldUpdateOperationsInput | string
   referencias?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cliente?: Prisma.ClienteUpdateOneWithoutOrdenesNestedInput
+  pagos?: Prisma.PagoUpdateManyWithoutOrdenNestedInput
   detalles?: Prisma.DetalleOrdenUpdateManyWithoutOrdenNestedInput
 }
 
@@ -370,6 +376,7 @@ export type OrdenUncheckedUpdateInput = {
   direccionEnvio?: Prisma.StringFieldUpdateOperationsInput | string
   referencias?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pagos?: Prisma.PagoUncheckedUpdateManyWithoutOrdenNestedInput
   detalles?: Prisma.DetalleOrdenUncheckedUpdateManyWithoutOrdenNestedInput
 }
 
@@ -538,6 +545,20 @@ export type OrdenUpdateOneRequiredWithoutDetallesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrdenUpdateToOneWithWhereWithoutDetallesInput, Prisma.OrdenUpdateWithoutDetallesInput>, Prisma.OrdenUncheckedUpdateWithoutDetallesInput>
 }
 
+export type OrdenCreateNestedOneWithoutPagosInput = {
+  create?: Prisma.XOR<Prisma.OrdenCreateWithoutPagosInput, Prisma.OrdenUncheckedCreateWithoutPagosInput>
+  connectOrCreate?: Prisma.OrdenCreateOrConnectWithoutPagosInput
+  connect?: Prisma.OrdenWhereUniqueInput
+}
+
+export type OrdenUpdateOneRequiredWithoutPagosNestedInput = {
+  create?: Prisma.XOR<Prisma.OrdenCreateWithoutPagosInput, Prisma.OrdenUncheckedCreateWithoutPagosInput>
+  connectOrCreate?: Prisma.OrdenCreateOrConnectWithoutPagosInput
+  upsert?: Prisma.OrdenUpsertWithoutPagosInput
+  connect?: Prisma.OrdenWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrdenUpdateToOneWithWhereWithoutPagosInput, Prisma.OrdenUpdateWithoutPagosInput>, Prisma.OrdenUncheckedUpdateWithoutPagosInput>
+}
+
 export type OrdenCreateWithoutClienteInput = {
   fecha?: Date | string
   total: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -546,6 +567,7 @@ export type OrdenCreateWithoutClienteInput = {
   telefonoContacto: string
   direccionEnvio: string
   referencias?: string | null
+  pagos?: Prisma.PagoCreateNestedManyWithoutOrdenInput
   detalles?: Prisma.DetalleOrdenCreateNestedManyWithoutOrdenInput
 }
 
@@ -558,6 +580,7 @@ export type OrdenUncheckedCreateWithoutClienteInput = {
   telefonoContacto: string
   direccionEnvio: string
   referencias?: string | null
+  pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutOrdenInput
   detalles?: Prisma.DetalleOrdenUncheckedCreateNestedManyWithoutOrdenInput
 }
 
@@ -611,6 +634,7 @@ export type OrdenCreateWithoutDetallesInput = {
   direccionEnvio: string
   referencias?: string | null
   cliente?: Prisma.ClienteCreateNestedOneWithoutOrdenesInput
+  pagos?: Prisma.PagoCreateNestedManyWithoutOrdenInput
 }
 
 export type OrdenUncheckedCreateWithoutDetallesInput = {
@@ -623,6 +647,7 @@ export type OrdenUncheckedCreateWithoutDetallesInput = {
   direccionEnvio: string
   referencias?: string | null
   clienteId?: number | null
+  pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutOrdenInput
 }
 
 export type OrdenCreateOrConnectWithoutDetallesInput = {
@@ -650,6 +675,7 @@ export type OrdenUpdateWithoutDetallesInput = {
   direccionEnvio?: Prisma.StringFieldUpdateOperationsInput | string
   referencias?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cliente?: Prisma.ClienteUpdateOneWithoutOrdenesNestedInput
+  pagos?: Prisma.PagoUpdateManyWithoutOrdenNestedInput
 }
 
 export type OrdenUncheckedUpdateWithoutDetallesInput = {
@@ -662,6 +688,73 @@ export type OrdenUncheckedUpdateWithoutDetallesInput = {
   direccionEnvio?: Prisma.StringFieldUpdateOperationsInput | string
   referencias?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pagos?: Prisma.PagoUncheckedUpdateManyWithoutOrdenNestedInput
+}
+
+export type OrdenCreateWithoutPagosInput = {
+  fecha?: Date | string
+  total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  estado?: $Enums.EstadoOrden
+  nombreContacto: string
+  telefonoContacto: string
+  direccionEnvio: string
+  referencias?: string | null
+  cliente?: Prisma.ClienteCreateNestedOneWithoutOrdenesInput
+  detalles?: Prisma.DetalleOrdenCreateNestedManyWithoutOrdenInput
+}
+
+export type OrdenUncheckedCreateWithoutPagosInput = {
+  id?: number
+  fecha?: Date | string
+  total: runtime.Decimal | runtime.DecimalJsLike | number | string
+  estado?: $Enums.EstadoOrden
+  nombreContacto: string
+  telefonoContacto: string
+  direccionEnvio: string
+  referencias?: string | null
+  clienteId?: number | null
+  detalles?: Prisma.DetalleOrdenUncheckedCreateNestedManyWithoutOrdenInput
+}
+
+export type OrdenCreateOrConnectWithoutPagosInput = {
+  where: Prisma.OrdenWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrdenCreateWithoutPagosInput, Prisma.OrdenUncheckedCreateWithoutPagosInput>
+}
+
+export type OrdenUpsertWithoutPagosInput = {
+  update: Prisma.XOR<Prisma.OrdenUpdateWithoutPagosInput, Prisma.OrdenUncheckedUpdateWithoutPagosInput>
+  create: Prisma.XOR<Prisma.OrdenCreateWithoutPagosInput, Prisma.OrdenUncheckedCreateWithoutPagosInput>
+  where?: Prisma.OrdenWhereInput
+}
+
+export type OrdenUpdateToOneWithWhereWithoutPagosInput = {
+  where?: Prisma.OrdenWhereInput
+  data: Prisma.XOR<Prisma.OrdenUpdateWithoutPagosInput, Prisma.OrdenUncheckedUpdateWithoutPagosInput>
+}
+
+export type OrdenUpdateWithoutPagosInput = {
+  fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  estado?: Prisma.EnumEstadoOrdenFieldUpdateOperationsInput | $Enums.EstadoOrden
+  nombreContacto?: Prisma.StringFieldUpdateOperationsInput | string
+  telefonoContacto?: Prisma.StringFieldUpdateOperationsInput | string
+  direccionEnvio?: Prisma.StringFieldUpdateOperationsInput | string
+  referencias?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cliente?: Prisma.ClienteUpdateOneWithoutOrdenesNestedInput
+  detalles?: Prisma.DetalleOrdenUpdateManyWithoutOrdenNestedInput
+}
+
+export type OrdenUncheckedUpdateWithoutPagosInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  total?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  estado?: Prisma.EnumEstadoOrdenFieldUpdateOperationsInput | $Enums.EstadoOrden
+  nombreContacto?: Prisma.StringFieldUpdateOperationsInput | string
+  telefonoContacto?: Prisma.StringFieldUpdateOperationsInput | string
+  direccionEnvio?: Prisma.StringFieldUpdateOperationsInput | string
+  referencias?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  detalles?: Prisma.DetalleOrdenUncheckedUpdateManyWithoutOrdenNestedInput
 }
 
 export type OrdenCreateManyClienteInput = {
@@ -683,6 +776,7 @@ export type OrdenUpdateWithoutClienteInput = {
   telefonoContacto?: Prisma.StringFieldUpdateOperationsInput | string
   direccionEnvio?: Prisma.StringFieldUpdateOperationsInput | string
   referencias?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagos?: Prisma.PagoUpdateManyWithoutOrdenNestedInput
   detalles?: Prisma.DetalleOrdenUpdateManyWithoutOrdenNestedInput
 }
 
@@ -695,6 +789,7 @@ export type OrdenUncheckedUpdateWithoutClienteInput = {
   telefonoContacto?: Prisma.StringFieldUpdateOperationsInput | string
   direccionEnvio?: Prisma.StringFieldUpdateOperationsInput | string
   referencias?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagos?: Prisma.PagoUncheckedUpdateManyWithoutOrdenNestedInput
   detalles?: Prisma.DetalleOrdenUncheckedUpdateManyWithoutOrdenNestedInput
 }
 
@@ -715,10 +810,12 @@ export type OrdenUncheckedUpdateManyWithoutClienteInput = {
  */
 
 export type OrdenCountOutputType = {
+  pagos: number
   detalles: number
 }
 
 export type OrdenCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  pagos?: boolean | OrdenCountOutputTypeCountPagosArgs
   detalles?: boolean | OrdenCountOutputTypeCountDetallesArgs
 }
 
@@ -730,6 +827,13 @@ export type OrdenCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extens
    * Select specific fields to fetch from the OrdenCountOutputType
    */
   select?: Prisma.OrdenCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * OrdenCountOutputType without action
+ */
+export type OrdenCountOutputTypeCountPagosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PagoWhereInput
 }
 
 /**
@@ -751,6 +855,7 @@ export type OrdenSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   referencias?: boolean
   clienteId?: boolean
   cliente?: boolean | Prisma.Orden$clienteArgs<ExtArgs>
+  pagos?: boolean | Prisma.Orden$pagosArgs<ExtArgs>
   detalles?: boolean | Prisma.Orden$detallesArgs<ExtArgs>
   _count?: boolean | Prisma.OrdenCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["orden"]>
@@ -796,6 +901,7 @@ export type OrdenSelectScalar = {
 export type OrdenOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "fecha" | "total" | "estado" | "nombreContacto" | "telefonoContacto" | "direccionEnvio" | "referencias" | "clienteId", ExtArgs["result"]["orden"]>
 export type OrdenInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   cliente?: boolean | Prisma.Orden$clienteArgs<ExtArgs>
+  pagos?: boolean | Prisma.Orden$pagosArgs<ExtArgs>
   detalles?: boolean | Prisma.Orden$detallesArgs<ExtArgs>
   _count?: boolean | Prisma.OrdenCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -810,6 +916,7 @@ export type $OrdenPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name: "Orden"
   objects: {
     cliente: Prisma.$ClientePayload<ExtArgs> | null
+    pagos: Prisma.$PagoPayload<ExtArgs>[]
     detalles: Prisma.$DetalleOrdenPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1217,6 +1324,7 @@ readonly fields: OrdenFieldRefs;
 export interface Prisma__OrdenClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   cliente<T extends Prisma.Orden$clienteArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Orden$clienteArgs<ExtArgs>>): Prisma.Prisma__ClienteClient<runtime.Types.Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  pagos<T extends Prisma.Orden$pagosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Orden$pagosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PagoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   detalles<T extends Prisma.Orden$detallesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Orden$detallesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DetalleOrdenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1673,6 +1781,30 @@ export type Orden$clienteArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.ClienteInclude<ExtArgs> | null
   where?: Prisma.ClienteWhereInput
+}
+
+/**
+ * Orden.pagos
+ */
+export type Orden$pagosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Pago
+   */
+  select?: Prisma.PagoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Pago
+   */
+  omit?: Prisma.PagoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PagoInclude<ExtArgs> | null
+  where?: Prisma.PagoWhereInput
+  orderBy?: Prisma.PagoOrderByWithRelationInput | Prisma.PagoOrderByWithRelationInput[]
+  cursor?: Prisma.PagoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PagoScalarFieldEnum | Prisma.PagoScalarFieldEnum[]
 }
 
 /**

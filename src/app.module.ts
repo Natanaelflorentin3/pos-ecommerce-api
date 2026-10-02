@@ -10,6 +10,7 @@ import { VentasModule } from './ventas/ventas.module';
 import { ClientesModule } from './clientes/clientes.module';
 import { CarritoModule } from './carrito/carrito.module';
 import { OrdenesModule } from './ordenes/ordenes.module';
+import { PagosModule } from './pagos/pagos.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { OrdenesModule } from './ordenes/ordenes.module';
     ClientesModule,
     CarritoModule,
     OrdenesModule,
+    PagosModule,
   ],
   controllers: [],
   providers: [],
