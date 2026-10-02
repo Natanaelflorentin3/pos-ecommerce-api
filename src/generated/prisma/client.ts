@@ -99,3 +99,8 @@ export type Orden = Prisma.OrdenModel
  * 
  */
 export type DetalleOrden = Prisma.DetalleOrdenModel
+/**
+ * Model Pago
+ * 
+ */
+export type Pago = Prisma.PagoModel

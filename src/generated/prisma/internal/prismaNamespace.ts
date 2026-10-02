@@ -408,7 +408,8 @@ export const ModelName = {
   Carrito: 'Carrito',
   ItemCarrito: 'ItemCarrito',
   Orden: 'Orden',
-  DetalleOrden: 'DetalleOrden'
+  DetalleOrden: 'DetalleOrden',
+  Pago: 'Pago'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -424,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "usuario" | "cliente" | "direccion" | "categoria" | "producto" | "caja" | "venta" | "detalleVenta" | "carrito" | "itemCarrito" | "orden" | "detalleOrden"
+    modelProps: "usuario" | "cliente" | "direccion" | "categoria" | "producto" | "caja" | "venta" | "detalleVenta" | "carrito" | "itemCarrito" | "orden" | "detalleOrden" | "pago"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1316,6 +1317,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Pago: {
+      payload: Prisma.$PagoPayload<ExtArgs>
+      fields: Prisma.PagoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PagoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PagoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>
+        }
+        findFirst: {
+          args: Prisma.PagoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PagoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>
+        }
+        findMany: {
+          args: Prisma.PagoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>[]
+        }
+        create: {
+          args: Prisma.PagoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>
+        }
+        createMany: {
+          args: Prisma.PagoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PagoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>[]
+        }
+        delete: {
+          args: Prisma.PagoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>
+        }
+        update: {
+          args: Prisma.PagoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>
+        }
+        deleteMany: {
+          args: Prisma.PagoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PagoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PagoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>[]
+        }
+        upsert: {
+          args: Prisma.PagoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>
+        }
+        aggregate: {
+          args: Prisma.PagoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePago>
+        }
+        groupBy: {
+          args: Prisma.PagoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PagoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PagoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PagoCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1495,6 +1570,21 @@ export const DetalleOrdenScalarFieldEnum = {
 export type DetalleOrdenScalarFieldEnum = (typeof DetalleOrdenScalarFieldEnum)[keyof typeof DetalleOrdenScalarFieldEnum]
 
 
+export const PagoScalarFieldEnum = {
+  id: 'id',
+  transaccionId: 'transaccionId',
+  monto: 'monto',
+  estado: 'estado',
+  motivoFallo: 'motivoFallo',
+  checkoutUrl: 'checkoutUrl',
+  creadoEn: 'creadoEn',
+  actualizadoEn: 'actualizadoEn',
+  ordenId: 'ordenId'
+} as const
+
+export type PagoScalarFieldEnum = (typeof PagoScalarFieldEnum)[keyof typeof PagoScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1655,6 +1745,20 @@ export type EnumEstadoOrdenFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'EstadoOrden[]'
  */
 export type ListEnumEstadoOrdenFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoOrden[]'>
+    
+
+
+/**
+ * Reference to a field of type 'EstadoPago'
+ */
+export type EnumEstadoPagoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoPago'>
+    
+
+
+/**
+ * Reference to a field of type 'EstadoPago[]'
+ */
+export type ListEnumEstadoPagoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoPago[]'>
     
 
 
@@ -1834,6 +1938,7 @@ export type GlobalOmitConfig = {
   itemCarrito?: Prisma.ItemCarritoOmit
   orden?: Prisma.OrdenOmit
   detalleOrden?: Prisma.DetalleOrdenOmit
+  pago?: Prisma.PagoOmit
 }
 
 /* Types for Logging */

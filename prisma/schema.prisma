@@ -47,6 +47,12 @@ enum EstadoVenta {
   CANCELADA
 }
 
+enum EstadoPago {
+  PENDIENTE
+  APROBADO
+  RECHAZADO
+}
+
 // ─── IDENTIDAD ───────────────────────────────────────
 
 model Usuario {
@@ -184,6 +190,7 @@ model Orden {
   referencias      String?
   clienteId        Int?
   cliente          Cliente?    @relation(fields: [clienteId], references: [id])
+  pagos Pago[]
 
   detalles DetalleOrden[]
 }
@@ -196,4 +203,18 @@ model DetalleOrden {
   orden          Orden    @relation(fields: [ordenId], references: [id])
   productoId     Int
   producto       Producto @relation(fields: [productoId], references: [id])
+}
+
+
+model Pago {
+  id            Int        @id @default(autoincrement())
+  transaccionId String     @unique
+  monto         Decimal    @db.Decimal(10, 2)
+  estado        EstadoPago @default(PENDIENTE)
+  motivoFallo   String?
+  checkoutUrl   String
+  creadoEn      DateTime   @default(now())
+  actualizadoEn DateTime   @updatedAt
+  ordenId       Int
+  orden         Orden      @relation(fields: [ordenId], references: [id])
 }

@@ -53,3 +53,12 @@ export const EstadoVenta = {
 } as const
 
 export type EstadoVenta = (typeof EstadoVenta)[keyof typeof EstadoVenta]
+
+
+export const EstadoPago = {
+  PENDIENTE: 'PENDIENTE',
+  APROBADO: 'APROBADO',
+  RECHAZADO: 'RECHAZADO'
+} as const
+
+export type EstadoPago = (typeof EstadoPago)[keyof typeof EstadoPago]
