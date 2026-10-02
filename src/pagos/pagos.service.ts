@@ -41,17 +41,26 @@ export class PagosService {
         }),
       },
     );
+
+    const cuerpo = (await respuesta.json().catch(() => ({}))) as Record<string, unknown>;
+    console.log('MockPay respuesta:', respuesta.status, JSON.stringify(cuerpo));
+
     if (!respuesta.ok) {
       throw new BadGatewayException('La pasarela de pagos no respondió correctamente');
     }
 
-    const data = (await respuesta.json()) as {
-      id?: string;
-      transaction_id?: string;
-      checkout_url: string;
-    };
-    const transaccionId = data.id ?? data.transaction_id;
-    if (!transaccionId || !data.checkout_url) {
+    // La info puede venir directa o dentro de "data" / "payment"
+    const datos = (cuerpo.data ?? cuerpo.payment ?? cuerpo) as Record<string, unknown>;
+    const transaccionId = String(
+      datos.id ?? datos.transaction_id ?? datos.transactionId ??
+      datos.payment_id ?? datos.paymentId ?? '',
+    );
+    const checkoutUrl = String(
+      datos.checkout_url ?? datos.checkoutUrl ?? datos.url ??
+      cuerpo.checkout_url ?? cuerpo.checkoutUrl ?? '',
+    );
+
+    if (!transaccionId || !checkoutUrl) {
       throw new BadGatewayException('Respuesta inesperada de la pasarela');
     }
 
@@ -59,7 +68,7 @@ export class PagosService {
       data: {
         transaccionId,
         monto: orden.total,
-        checkoutUrl: data.checkout_url,
+        checkoutUrl,
         ordenId: orden.id,
       },
     });
@@ -68,9 +77,21 @@ export class PagosService {
 
   // 2. MockPay avisa el resultado (servidor a servidor)
   async procesarWebhook(evento: MockpayWebhook) {
-    const pago = await this.prisma.pago.findUnique({
-      where: { transaccionId: evento.id },
-    });
+    console.log('MockPay webhook:', JSON.stringify(evento));
+
+    const extra = evento as unknown as Record<string, unknown>;
+    const idEvento = String(evento.id ?? extra.transaction_id ?? extra.transactionId ?? '');
+
+    // Buscar el pago por id de transacción; si no, por la orden del metadata
+    let pago = idEvento
+      ? await this.prisma.pago.findUnique({ where: { transaccionId: idEvento } })
+      : null;
+    if (!pago && evento.metadata?.orden_id) {
+      pago = await this.prisma.pago.findFirst({
+        where: { ordenId: Number(evento.metadata.orden_id), estado: EstadoPago.PENDIENTE },
+        orderBy: { creadoEn: 'desc' },
+      });
+    }
     if (!pago) throw new NotFoundException('Transacción desconocida');
 
     // Idempotencia: si ya se procesó, no se repite
@@ -82,20 +103,23 @@ export class PagosService {
       throw new BadRequestException('El monto no coincide');
     }
 
+    const pagoId = pago.id;
+    const ordenId = pago.ordenId;
+
     await this.prisma.$transaction(async (tx) => {
       if (evento.status === 'SUCCEEDED') {
         await tx.pago.update({
-          where: { id: pago.id },
+          where: { id: pagoId },
           data: { estado: EstadoPago.APROBADO },
         });
         await tx.orden.updateMany({
-          where: { id: pago.ordenId, estado: EstadoOrden.PENDIENTE },
+          where: { id: ordenId, estado: EstadoOrden.PENDIENTE },
           data: { estado: EstadoOrden.PAGADO },
         });
       } else {
         await tx.pago.update({
-          where: { id: pago.id },
-          data: { estado: EstadoPago.RECHAZADO, motivoFallo: evento.failure_reason },
+          where: { id: pagoId },
+          data: { estado: EstadoPago.RECHAZADO, motivoFallo: evento.failure_reason ?? null },
         });
       }
     });
