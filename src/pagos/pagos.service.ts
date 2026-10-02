@@ -52,8 +52,8 @@ export class PagosService {
     // La info puede venir directa o dentro de "data" / "payment"
     const datos = (cuerpo.data ?? cuerpo.payment ?? cuerpo) as Record<string, unknown>;
     const transaccionId = String(
-      datos.id ?? datos.transaction_id ?? datos.transactionId ??
-      datos.payment_id ?? datos.paymentId ?? '',
+      datos.id_transaccion ?? datos.id ?? datos.transaction_id ??
+      datos.transactionId ?? datos.payment_id ?? datos.paymentId ?? '',
     );
     const checkoutUrl = String(
       datos.checkout_url ?? datos.checkoutUrl ?? datos.url ??
@@ -64,11 +64,14 @@ export class PagosService {
       throw new BadGatewayException('Respuesta inesperada de la pasarela');
     }
 
+    // Saca la doble barra que manda MockPay (vercel.app//checkout)
+    const urlLimpia = checkoutUrl.replace(/([^:]\/)\/+/g, '$1');
+
     const pago = await this.prisma.pago.create({
       data: {
         transaccionId,
         monto: orden.total,
-        checkoutUrl,
+        checkoutUrl: urlLimpia,
         ordenId: orden.id,
       },
     });
@@ -80,7 +83,9 @@ export class PagosService {
     console.log('MockPay webhook:', JSON.stringify(evento));
 
     const extra = evento as unknown as Record<string, unknown>;
-    const idEvento = String(evento.id ?? extra.transaction_id ?? extra.transactionId ?? '');
+    const idEvento = String(
+      evento.id ?? extra.id_transaccion ?? extra.transaction_id ?? extra.transactionId ?? '',
+    );
 
     // Buscar el pago por id de transacción; si no, por la orden del metadata
     let pago = idEvento
